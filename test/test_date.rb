@@ -44,12 +44,6 @@ class DateTests < Test::Unit::TestCase
     assert_equal 18, Feriados.calculado(:tercer, :lunes, 8, 2014).day
     assert_equal 17, Feriados.calculado(:tercer, :lunes, 8, 2015).day
 
-    # Día de la raza.
-    assert_equal 15, Feriados.dia_de_la_raza(Date.civil(2012,10,12)).day
-    assert_equal 12, Feriados.dia_de_la_raza(Date.civil(2013,10,12)).day
-    assert_equal 12, Feriados.dia_de_la_raza(Date.civil(2014,10,12)).day
-    assert_equal 12, Feriados.dia_de_la_raza(Date.civil(2015,10,12)).day
-
     # Pascua.
     assert_equal 8, Feriados.pascua(2012).day
     assert_equal 31, Feriados.pascua(2013).day

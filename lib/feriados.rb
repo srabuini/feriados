@@ -1,32 +1,24 @@
 require 'date'
-require 'feriados/dsl'
 
 module Feriados
+  DIA = {domingo: 7, lunes: 1, martes: 2, miercoles: 3, jueves: 4, viernes: 5,
+    sabado: 6}
 
-  def self.add(descripcion, opciones={})
+  def self.add(descripcion, opciones = {})
     @feriados_por_mes ||= {}
-    nombre = { :nombre => descripcion }
-    nombre.merge! opciones
-    mes = opciones[:mes]
-    if mes
-      @feriados_por_mes[mes] ||= []
-      @feriados_por_mes[mes] << nombre
-    else
-      @feriados_por_mes[0] ||= []
-      @feriados_por_mes[0] << nombre
-    end
+    mes = opciones[:mes] || 0
+    @feriados_por_mes[mes] ||= []
+    @feriados_por_mes[mes] << {descripcion: descripcion}.merge!(opciones)
   end
 
-  DIA = {:domingo => 7, :lunes => 1, :martes => 2, :miercoles => 3, :jueves => 4, :viernes => 5, :sabado => 6}  
-
-  def self.calculado(enesimo,dia,mes,anio)
-    n = {:primer => 1, :segundo => 2, :tercer => 3, :cuarto => 4}
+  def self.calculado(enesimo, dia, mes, anio)
+    n = {primer: 1, segundo: 2, tercer: 3, cuarto: 4}
 
     semana = n[enesimo]
-    fecha = Date.civil(anio,mes,1)
+    fecha = Date.civil(anio, mes, 1)
     offset = DIA[dia] - fecha.wday
     offset += 7 if offset < 0
-    offset += 7 * (semana-1)
+    offset += 7 * (semana - 1)
     fecha + offset
   end
 
@@ -49,31 +41,21 @@ module Feriados
     Date.civil(year, month, day)
   end
 
-  def self.dia_de_la_raza(fecha)
-    # Si cae martes o miércoles, lunes anterior.
-    # Si cae jueves o viernes, lunes siguiente.
-    result = case fecha.wday
-      when (1..3) then calculado(:segundo, :lunes, fecha.month, fecha.year)
-      when (4..5) then calculado(:tercer, :lunes, fecha.month, fecha.year)
-      else fecha
-    end
-  end
-
   def self.entre(fecha_inicial, fecha_final)
     fechas = {}
     lista = []
     (fecha_inicial..fecha_final).each do |fecha|
-      fechas[fecha.year] = [0] unless fechas[fecha.year]      
+      fechas[fecha.year] = [0] unless fechas[fecha.year]
       fechas[fecha.year] << fecha.month unless fechas[fecha.year].include?(fecha.month)
     end
 
-    fechas.each do |anio,meses|
+    fechas.each do |anio, meses|
       meses.each do |mes|
         feriados = @feriados_por_mes[mes]
         if feriados
           feriados.each do |feriado|
             fecha = nil
-            nombre = feriado[:nombre]
+            descripcion = feriado[:descripcion]
             if feriado[:funcion]
               fecha = feriado[:funcion].call(anio)
             end
@@ -81,13 +63,13 @@ module Feriados
               fecha = calculado(feriado[:cambia_fijo][0], feriado[:cambia_fijo][1], mes, anio)
             end
             if feriado[:cambia_variable]
-              fecha = feriado[:cambia_variable].call(Date.civil(anio,mes,feriado[:dia]))
+              fecha = feriado[:cambia_variable].call(Date.civil(anio, mes, feriado[:dia]))
             end
             unless fecha
               fecha = Date.civil(feriado[:anio] || anio, mes, feriado[:dia])
             end
-            if fecha.between?(fecha_inicial,fecha_final)
-              lista << { :fecha => fecha, :nombre => nombre } if fecha.year == anio
+            if fecha.between?(fecha_inicial, fecha_final)
+              lista << { fecha: fecha, descripcion: descripcion } if fecha.year == anio
             end
           end
         end
