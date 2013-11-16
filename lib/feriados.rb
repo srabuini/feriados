@@ -42,8 +42,8 @@ module Feriados
   end
 
   def self.entre(fecha_inicial, fecha_final)
-    fechas = {}
-    lista = []
+    fechas, lista = {}, []
+
     (fecha_inicial..fecha_final).each do |fecha|
       fechas[fecha.year] = [0] unless fechas[fecha.year]
       fechas[fecha.year] << fecha.month unless fechas[fecha.year].include?(fecha.month)
@@ -51,23 +51,17 @@ module Feriados
 
     fechas.each do |anio, meses|
       meses.each do |mes|
-        feriados = @feriados_por_mes[mes]
-        if feriados
+        if feriados = @feriados_por_mes[mes]
           feriados.each do |feriado|
-            fecha = nil
             descripcion = feriado[:descripcion]
-            if feriado[:funcion]
-              fecha = feriado[:funcion].call(anio)
-            end
-            if feriado[:cambia_fijo]
-              fecha = calculado(feriado[:cambia_fijo][0], feriado[:cambia_fijo][1], mes, anio)
-            end
-            if feriado[:cambia_variable]
-              fecha = feriado[:cambia_variable].call(Date.civil(anio, mes, feriado[:dia]))
-            end
-            unless fecha
-              fecha = Date.civil(feriado[:anio] || anio, mes, feriado[:dia])
-            end
+
+            fecha = feriado[:funcion].call(anio) if feriado[:funcion]
+            fecha = calculado(feriado[:cambia_fijo][0], feriado[:cambia_fijo][1],
+              mes, anio) if feriado[:cambia_fijo]
+            fecha = feriado[:cambia_variable].call(Date.civil(anio, mes,
+              feriado[:dia])) if feriado[:cambia_variable]
+            fecha = Date.civil(feriado[:anio] || anio, mes, feriado[:dia]) unless fecha
+
             if fecha.between?(fecha_inicial, fecha_final)
               lista << { fecha: fecha, descripcion: descripcion } if fecha.year == anio
             end
@@ -75,11 +69,8 @@ module Feriados
         end
       end
     end
-    lista.sort_by { |feriado| feriado[:fecha] }
-  end
 
-  def self.arr
-    @feriados_por_mes
+    lista.sort_by { |feriado| feriado[:fecha] }
   end
 end
 
