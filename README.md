@@ -1,13 +1,13 @@
-feriados
+Feriados
 ========
 
 Feriados argentinos. Extiende la clase Date, agregando los métodos:
 
-    es_feriado?
+    is_holiday?
 
 y
 
-    es_fin_de_semana?
+    is_weekend?
 
 Instalacion
 -----------
@@ -21,5 +21,5 @@ Uso
 require 'feriados'
 require 'feriados/argentina'
 
-Date.civil(2013, 5, 1).es_feriado? #=> true
+Date.civil(2013, 5, 1).is_holiday? #=> true
 ```
