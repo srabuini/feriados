@@ -1,28 +1,28 @@
 require 'date'
 
 module Feriados
-  DIA = {domingo: 7, lunes: 1, martes: 2, miercoles: 3, jueves: 4, viernes: 5,
-    sabado: 6}
+  DAYS = {sunday: 7, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5,
+    saturday: 6}
 
-  def self.add(descripcion, opciones = {})
-    @feriados_por_mes ||= {}
-    mes = opciones[:mes] || 0
-    @feriados_por_mes[mes] ||= []
-    @feriados_por_mes[mes] << {descripcion: descripcion}.merge!(opciones)
+  def self.add(description, options = {})
+    @holidays_by_month ||= {}
+    month = options[:month] || 0
+    @holidays_by_month[month] ||= []
+    @holidays_by_month[month] << {description: description}.merge!(options)
   end
 
-  def self.calculado(enesimo, dia, mes, anio)
-    n = {primer: 1, segundo: 2, tercer: 3, cuarto: 4}
+  def self.calculated(th, day, month, year)
+    n = {first: 1, second: 2, third: 3, fourth: 4}
 
-    semana = n[enesimo]
-    fecha = Date.civil(anio, mes, 1)
-    offset = DIA[dia] - fecha.wday
+    week = n[th]
+    date = Date.civil(year, month, 1)
+    offset = DAYS[day] - date.wday
     offset += 7 if offset < 0
-    offset += 7 * (semana - 1)
-    fecha + offset
+    offset += 7 * (week - 1)
+    date + offset
   end
 
-  def self.pascua(year)
+  def self.easter(year)
     y = year
     a = y % 19
     b = y / 100
@@ -41,46 +41,46 @@ module Feriados
     Date.civil(year, month, day)
   end
 
-  def self.entre(fecha_inicial, fecha_final)
-    fechas, lista = {}, []
+  def self.between(start_date, end_date)
+    dates, list = {}, []
 
-    (fecha_inicial..fecha_final).each do |fecha|
-      fechas[fecha.year] = [0] unless fechas[fecha.year]
-      fechas[fecha.year] << fecha.month unless fechas[fecha.year].include?(fecha.month)
+    (start_date..end_date).each do |date|
+      dates[date.year] = [0] unless dates[date.year]
+      dates[date.year] << date.month unless dates[date.year].include?(date.month)
     end
 
-    fechas.each do |anio, meses|
-      meses.each do |mes|
-        if feriados = @feriados_por_mes[mes]
-          feriados.each do |feriado|
-            descripcion = feriado[:descripcion]
+    dates.each do |year, months|
+      months.each do |month|
+        if holidays = @holidays_by_month[month]
+          holidays.each do |holiday|
+            description = holiday[:description]
 
-            fecha = feriado[:funcion].call(anio) if feriado[:funcion]
-            fecha = calculado(feriado[:cambia_fijo][0], feriado[:cambia_fijo][1],
-              mes, anio) if feriado[:cambia_fijo]
-            fecha = feriado[:cambia_variable].call(Date.civil(anio, mes,
-              feriado[:dia])) if feriado[:cambia_variable]
-            fecha = Date.civil(feriado[:anio] || anio, mes, feriado[:dia]) unless fecha
+            date = holiday[:function].call(year) if holiday[:function]
+            date = calculated(holiday[:fix_change][0], holiday[:fix_change][1],
+              month, year) if holiday[:fix_change]
+            date = holiday[:variable_change].call(Date.civil(year, month,
+              holiday[:day])) if holiday[:variable_change]
+            date = Date.civil(holiday[:year] || year, month, holiday[:day]) unless date
 
-            if fecha.between?(fecha_inicial, fecha_final)
-              lista << { fecha: fecha, descripcion: descripcion } if fecha.year == anio
+            if date.between?(start_date, end_date)
+              list << { date: date, description: description } if date.year == year
             end
           end
         end
       end
     end
 
-    lista.sort_by { |feriado| feriado[:fecha] }
+    list.sort_by { |holidays| holidays[:date] }
   end
 end
 
 class Date
-  def es_feriado?
-    feriados = Feriados.entre(self, self)
-    feriados && !feriados.empty?
+  def is_holiday?
+    holidays = Feriados.between(self, self)
+    holidays && !holidays.empty?
   end
 
-  def es_fin_de_semana?
+  def is_week_end?
     self.wday == 6 or self.wday == 0
   end
 end
