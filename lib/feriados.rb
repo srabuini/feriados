@@ -1,8 +1,8 @@
 require 'date'
 
 module Feriados
-  DAYS = {sunday: 7, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5,
-    saturday: 6}
+  DAYS = {sunday: 7, monday: 1, tuesday: 2, wednesday: 3, thursday: 4,
+    friday: 5, saturday: 6}
 
   def self.add(description, options = {})
     @holidays_by_month ||= {}
@@ -46,7 +46,9 @@ module Feriados
 
     (start_date..end_date).each do |date|
       dates[date.year] = [0] unless dates[date.year]
-      dates[date.year] << date.month unless dates[date.year].include?(date.month)
+      unless dates[date.year].include?(date.month)
+        dates[date.year] << date.month
+      end
     end
 
     dates.each do |year, months|
@@ -55,15 +57,20 @@ module Feriados
           holidays.each do |holiday|
             description = holiday[:description]
 
-            date = holiday[:function].call(year) if holiday[:function]
-            date = calculated(holiday[:fix_change][0], holiday[:fix_change][1],
-              month, year) if holiday[:fix_change]
-            date = holiday[:variable_change].call(Date.civil(year, month,
-              holiday[:day])) if holiday[:variable_change]
-            date = Date.civil(holiday[:year] || year, month, holiday[:day]) unless date
+            date = if holiday[:function]
+              holiday[:function].call(year)
+            elsif holiday[:fix_change]
+              calculated(holiday[:fix_change][0], holiday[:fix_change][1],
+                month, year)
+            elsif holiday[:variable_change]
+              holiday[:variable_change].call(Date.civil(year, month,
+                holiday[:day]))
+            else
+              Date.civil(holiday[:year] || year, month, holiday[:day])
+            end
 
-            if date.between?(start_date, end_date)
-              list << { date: date, description: description } if date.year == year
+            if date.between?(start_date, end_date) && date.year == year
+              list << { date: date, description: description }
             end
           end
         end
