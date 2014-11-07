@@ -42,7 +42,7 @@ module Feriados
     # Feriados especiales 2013
     Feriados.add "Bicentenario de la Asamblea General Constituyente de 1813",
      day: 31, month: 1, year: 2013
-    Feriados.add "Día de la Batalla de Salta", day: 20, month: 2
+    Feriados.add "Día de la Batalla de Salta", day: 20, month: 2, year: 2013
     Feriados.add "Feriado puente", day: 1, month: 4, year: 2013
     Feriados.add "Feriado puente", day: 21, month: 6, year: 2013
 
