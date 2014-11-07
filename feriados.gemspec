@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = "feriados"
-  s.version       = '2.1.0'
+  s.version       = '2.1.1'
   s.authors       = ["Sebastian Rabuini"]
   s.email         = ["srabuini@gmail.com"]
   s.summary       = %q{Feriados argentinos}
