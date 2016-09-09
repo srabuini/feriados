@@ -18,6 +18,10 @@ module Feriados
     def remove(rule)
       @rules.delete(rule)
     end
+
+    def push(rules)
+      @rules = rules
+    end
   end
 
   refine Date do
