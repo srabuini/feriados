@@ -11,16 +11,16 @@ module Feriados
       rules.any? { |rule| rule.holiday?(date) }
     end
 
+    def holiday_name(date)
+      rules.find { |rule| rule.holiday?(date) }&.name
+    end
+
     def add(rule)
       rules << rule
     end
 
     def remove(rule)
       rules.delete(rule)
-    end
-
-    def push(rules)
-      self.rules = rules
     end
 
     def load_rules(file)
@@ -33,6 +33,8 @@ module Feriados
   end
 
   refine Date do
+    @calendar = nil
+
     def holiday?
       @@calendar.holiday?(self)
     end

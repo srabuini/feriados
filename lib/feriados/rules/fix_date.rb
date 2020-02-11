@@ -1,7 +1,8 @@
 module Feriados
   module Rules
     class FixDate < RuleBase
-      def initialize(year, month, day)
+      def initialize(year, month, day, name = nil)
+        super(name)
         @year = year
         @month = month
         @day = day

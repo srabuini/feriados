@@ -4,295 +4,53 @@ class CalendarTest < Minitest::Test
   include Feriados::Rules
   include Feriados
 
-  def test_a_day_of_week_can_be_a_holiday
-    calendar = Calendar.new
-
-    a_saturday = Date.new(2016, 4, 30)
-
-    calendar.add(DayOfWeek.new(a_saturday.wday))
-
-    assert calendar.holiday?(a_saturday)
-  end
-
-  def test_a_day_of_week_can_be_not_a_holiday
-    calendar = Calendar.new
-
-    a_monday = Date.new(2016, 5, 2)
-
-    refute calendar.holiday?(a_monday)
-  end
-
-  def test_a_bunch_of_days_can_be_a_holiday
-    calendar = Calendar.new
-
-    a_saturday = Date.new(2016, 4, 30)
-    a_sunday = Date.new(2016, 5, 1)
-
-    calendar.add(DayOfWeek.new(a_saturday.wday))
-    calendar.add(DayOfWeek.new(a_sunday.wday))
-
-    assert calendar.holiday?(a_sunday)
-    assert calendar.holiday?(a_saturday)
-  end
-
-  def test_a_day_of_week_rule_can_be_deleted
-    calendar = Calendar.new
-
-    date = Date.new(2016, 5, 1)
-
-    calendar.add(DayOfWeek.new(date.wday))
-
-    assert calendar.holiday?(date)
-
-    calendar.remove(DayOfWeek.new(date.wday))
-
-    refute calendar.holiday?(date)
-  end
-
-  def test_a_date_of_month_can_be_a_holiday
-    calendar = Calendar.new
-
-    a_january_first = Date.new(2016, 1, 1)
-
-    calendar.add(DayOfMonth.new(1, 1))
-
-    assert calendar.holiday?(a_january_first)
-  end
-
-  def test_a_day_of_month_can_be_not_a_holiday
-    calendar = Calendar.new
-
-    a_day = Date.new(2016, 1, 2)
-
-    calendar.add(DayOfMonth.new(1, 1))
-
-    refute calendar.holiday?(a_day)
-  end
-
-  def test_a_bunch_of_days_of_month_can_be_a_holiday
-    calendar = Calendar.new
-
-    a_christmas = Date.new(2016, 12, 25)
-    a_january_first = Date.new(2016, 1, 1)
-
-    calendar.add(DayOfMonth.new(1, 1))
-    calendar.add(DayOfMonth.new(25, 12))
-
-    assert calendar.holiday?(a_christmas)
-    assert calendar.holiday?(a_january_first)
-  end
-
-  def test_a_day_of_month_rule_can_be_deleted
-    calendar = Calendar.new
-
-    date = Date.new(2016, 5, 1)
-
-    calendar.add(DayOfMonth.new(date.day, date.month))
-
-    assert calendar.holiday?(date)
-
-    calendar.remove(DayOfMonth.new(date.day, date.month))
-
-    refute calendar.holiday?(date)
-  end
-
-  def test_a_date_can_be_a_holiday
-    calendar = Calendar.new
-
-    date = Date.new(2016, 1, 1)
-
-    calendar.add(FixDate.new(2016, 1, 1))
-
-    assert calendar.holiday?(date)
-  end
-
-  def test_a_date_can_be_not_a_holiday
-    calendar = Calendar.new
-
-    refute calendar.holiday?(Date.new(2016, 1, 1))
-  end
-
-  def test_a_bunch_of_dates_can_be_a_holiday
-    calendar = Calendar.new
-
-    date = Date.new(2016, 4, 29)
-    another_date = Date.new(2016, 4, 30)
-
-    calendar.add(FixDate.new(2016, 4, 29))
-    calendar.add(FixDate.new(2016, 4, 30))
-
-    assert calendar.holiday?(date)
-    assert calendar.holiday?(another_date)
-  end
-
-  def test_a_date_rule_can_be_deleted
-    calendar = Calendar.new
-
-    date = Date.new(2016, 5, 1)
-
-    calendar.add(FixDate.new(date.year, date.month, date.day))
-
-    assert calendar.holiday?(date)
-
-    calendar.remove(FixDate.new(date.year, date.month, date.day))
-
-    refute calendar.holiday?(date)
-  end
-
-  def test_easter
-    calendar = Calendar.new
-
-    date = Date.new(2016, 3, 27)
-
-    calendar.add(Easter)
-
-    assert calendar.holiday?(date)
-  end
-
-  def test_not_easter
-    calendar = Calendar.new
-
-    date = Date.new(2016, 3, 26)
-
-    calendar.add(Easter)
-
-    refute calendar.holiday?(date)
-  end
-
-  def test_remove_easter
-    calendar = Calendar.new
-
-    date = Date.new(2016, 3, 27)
-
-    calendar.add(Easter)
-
-    assert calendar.holiday?(date)
-
-    calendar.remove(Easter)
-
-    refute calendar.holiday?(date)
-  end
-
-  def test_holy_friday
-    calendar = Calendar.new
-
-    date = Date.new(2016, 3, 25)
-
-    calendar.add(HolyFriday)
-
-    assert calendar.holiday?(date)
-  end
-
-  def test_not_holy_friday
-    calendar = Calendar.new
-
-    date = Date.new(2016, 3, 20)
-
-    calendar.add(HolyFriday)
-
-    refute calendar.holiday?(date)
-  end
-
-  def test_remove_holy_friday
-    calendar = Calendar.new
-
-    date = Date.new(2016, 3, 25)
-
-    calendar.add(HolyFriday)
-
-    assert calendar.holiday?(date)
-
-    calendar.remove(HolyFriday)
-
-    refute calendar.holiday?(date)
-  end
-
-  def test_holy_thursday
-    calendar = Calendar.new
-
-    date = Date.new(2016, 3, 24)
-
-    calendar.add(HolyThursday)
-
-    assert calendar.holiday?(date)
-  end
-
-  def test_fix_week_day_rule
-    calendar = Calendar.new
-
-    calendar.add(FixWeekDay.new(4, 1, 11))
-    calendar.add(FixWeekDay.new(3, 1, 8))
-
-    assert calendar.holiday?(Date.new(2016, 11, 28))
-    assert calendar.holiday?(Date.new(2016, 8, 15))
-  end
-
-  def test_not_fix_week_day_rule
-    calendar = Calendar.new
-
-    date = Date.new(2016, 5, 2)
-
-    calendar.add(FixWeekDay.new(2, 1, 5))
-
-    refute calendar.holiday?(date)
-  end
-
-  def test_remove_fix_week_day_rule
-    calendar = Calendar.new
-
-    date = Date.new(2016, 11, 28)
-
-    calendar.add(FixWeekDay.new(4, 1, 11))
-
-    assert calendar.holiday?(date)
-
-    calendar.remove(FixWeekDay.new(4, 1, 11))
-
-    refute calendar.holiday?(date)
-  end
-
   def test_load_argentinian_holidays
     calendar = Calendar.new
 
-    calendar.load_rules(File.join(__dir__, './argentina.yml'))
+    file = File.join(__dir__, './argentina.yml')
+    data = YAML.load_file(file)
 
-    holidays_2020 = [
-      [1, 1],
-      [2, 24],
-      [2, 25],
-      [3, 23],
-      [3, 24],
-      [4, 2],
-      [4, 9],
-      [4, 10],
-      [4, 12],
-      [5, 1],
-      [5, 25],
-      [6, 15],
-      [6, 20],
-      [7, 9],
-      [7, 10],
-      [8, 17],
-      [10, 12],
-      [11, 23],
-      [12, 7],
-      [12, 8],
-      [12, 25]
+    calendar.load_rules(data)
+
+    holidays2020_data = [
+      [1, 1, 'Año nuevo'],
+      [2, 24, 'Lunes de carnaval'],
+      [2, 25, 'Martes de carnaval'],
+      [3, 23, 'Feriado con fines turísticos'],
+      [3, 24, 'Día Nacional de la Memoria por la Verdad y la Justicia'],
+      [4, 2, 'Día del Veterano y de los Caídos en la Guerra de Malvinas'],
+      [4, 9, 'Jueves Santo'],
+      [4, 10, 'Viernes Santo'],
+      [4, 12, 'Pascua'],
+      [5, 1, 'Día del Trabajador'],
+      [5, 25, 'Día de la Revolución de Mayo'],
+      [6, 15, 'Día Paso a la Inmortalidad del General Martín Miguel de Güemes'],
+      [6, 20, 'Día de la Bandera'],
+      [7, 9, 'Día de la Independencia'],
+      [7, 10, 'Feriado con fines turísticos'],
+      [8, 17, 'Paso a la Inmortalidad del Gral. José de San Martín'],
+      [10, 12, 'Día del Respeto a la Diversidad Cultural'],
+      [11, 23, 'Día de la Soberanía Nacional'],
+      [12, 7, 'Feriado con fines turísticos'],
+      [12, 8, 'Inmaculada Concepción de María'],
+      [12, 25, 'Navidad']
     ]
 
-    holidays_2020.each do |month, day|
-      assert calendar.holiday?(Date.new(2020, month, day))
+    holidays2020_data.each do |month, day, description|
+      date = Date.new(2020, month, day)
+
+      assert calendar.holiday?(date)
+
+      assert_equal description, calendar.holiday_name(date), date
     end
 
     date = Date.new(2020, 1, 1)
-    assertions = []
-    0.upto(365) do |day|
-      today = date + day
-      holiday = calendar.holiday?(today)
+    detected_holidays = []
 
-      assertions << holiday
+    0.upto(365) do |day|
+      detected_holidays << calendar.holiday?(date + day)
     end
 
-    assert_equal(holidays_2020.count, assertions.count { |e| e })
+    assert_equal(holidays2020_data.count, detected_holidays.count { |e| e })
   end
 end

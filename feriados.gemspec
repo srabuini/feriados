@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'feriados'
-  s.version       = '4.2.0'
+  s.version       = '4.2.1'
   s.authors       = ['Sebastian Rabuini']
   s.email         = ['srabuini@gmail.com']
   s.summary       = 'Holidays calendars'
@@ -10,4 +10,6 @@ Gem::Specification.new do |s|
   s.files         = Dir['lib/**/*.rb']
   s.test_files    = Dir['test/**/*.rb']
   s.require_paths = ['lib']
+  s.add_development_dependency 'minitest', '~> 5.14'
+  s.add_development_dependency 'simplecov', '~> 0.17'
 end

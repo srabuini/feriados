@@ -1,4 +1,5 @@
 require_relative './rules/rule_base'
+require_relative './rules/function'
 require_relative './rules/carnival_monday'
 require_relative './rules/carnival_tuesday'
 require_relative './rules/day_of_month'

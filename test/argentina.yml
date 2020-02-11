@@ -1,40 +1,40 @@
----
-months:
-  1:
-    - name: Año nuevo
-      day: 1
-  3:
-    - name: Día Nacional de la Memoria por la Verdad y la Justicia
-      day: 24
-  4:
-    - name: Día del Veterano y de los Caídos en la Guerra de Malvinas
-      day: 2
-  5:
-    - name: Día del Trabajador
-      day: 1
-    - name: Día de la Revolución de Mayo
-      day: 25
-  6:
-    - name: Día de la Bandera
-      day: 20
-  7:
-    - name: Día de la Independencia
-      day: 9
-  12:
-    - name: Inmaculada Concepción de María
-      day: 8
-    - name: Navidad
-      day: 25
+day_of_month:
+  month:
+    1:
+      - name: Año nuevo
+        day: 1
+    3:
+      - name: Día Nacional de la Memoria por la Verdad y la Justicia
+        day: 24
+    4:
+      - name: Día del Veterano y de los Caídos en la Guerra de Malvinas
+        day: 2
+    5:
+      - name: Día del Trabajador
+        day: 1
+      - name: Día de la Revolución de Mayo
+        day: 25
+    6:
+      - name: Día de la Bandera
+        day: 20
+    7:
+      - name: Día de la Independencia
+        day: 9
+    12:
+      - name: Inmaculada Concepción de María
+        day: 8
+      - name: Navidad
+        day: 25
 
-functions:
-  - easter
-  - holy_thursday
-  - holy_friday
-  - carnival_monday
-  - carnival_tuesday
+function:
+  easter: Pascua
+  holy_thursday: Jueves Santo
+  holy_friday: Viernes Santo
+  carnival_monday: Lunes de carnaval
+  carnival_tuesday: Martes de carnaval
 
-fix_weekdays:
-  months:
+fix_week_day:
+  month:
     6:
       - name: Día Paso a la Inmortalidad del General Martín Miguel de Güemes
         week: 3
@@ -52,14 +52,14 @@ fix_weekdays:
         week: 4
         day: 1
 
-fix_days:
+fix_day:
   2020:
-      3:
-        - name: Feriado con Fines turísticos
-          day: 23
-      7:
-        - name: Feriados con Fines turísticos
-          day: 10
-      12:
-        - name: Feriados con Fines turísticos
-          day: 7
+    3:
+      - name: Feriado con fines turísticos
+        day: 23
+    7:
+      - name: Feriado con fines turísticos
+        day: 10
+    12:
+      - name: Feriado con fines turísticos
+        day: 7

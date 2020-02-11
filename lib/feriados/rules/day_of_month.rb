@@ -1,7 +1,8 @@
 module Feriados
   module Rules
     class DayOfMonth < RuleBase
-      def initialize(day, month)
+      def initialize(day, month, name = nil)
+        super(name)
         @day = day
         @month = month
       end

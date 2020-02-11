@@ -1,7 +1,8 @@
 module Feriados
   module Rules
     class FixWeekDay < RuleBase
-      def initialize(week, wday, month)
+      def initialize(week, wday, month, name = nil)
+        super(name)
         @week = week
         @wday = wday
         @month = month

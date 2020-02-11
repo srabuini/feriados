@@ -1,7 +1,8 @@
 module Feriados
   module Rules
     class DayOfWeek < RuleBase
-      def initialize(wday)
+      def initialize(wday, name = nil)
+        super(name)
         @wday = wday
       end
 
@@ -10,6 +11,7 @@ module Feriados
       end
 
       protected
+
       attr_reader :wday
 
       def state
