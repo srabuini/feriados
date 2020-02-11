@@ -1,7 +1,7 @@
 Feriados
 ========
 
-Make a calendar and add it rules for holidays. Inspired by [Esencia y Fundamentos de TDD](https://www.youtube.com/watch?v=4t0ZxUXnwN4)
+Make a calendar and add it rules for holidays.
 
 Install
 -------

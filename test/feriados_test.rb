@@ -254,34 +254,45 @@ class CalendarTest < Minitest::Test
   def test_load_argentinian_holidays
     calendar = Calendar.new
 
-    Feriados::Argentina.rules.each { |rule| calendar.add rule }
+    calendar.load_rules(File.join(__dir__, './argentina.yml'))
 
-    assert calendar.holiday?(Date.new(2016, 1, 1))
+    holidays_2020 = [
+      [1, 1],
+      [2, 24],
+      [2, 25],
+      [3, 23],
+      [3, 24],
+      [4, 2],
+      [4, 9],
+      [4, 10],
+      [4, 12],
+      [5, 1],
+      [5, 25],
+      [6, 15],
+      [6, 20],
+      [7, 9],
+      [7, 10],
+      [8, 17],
+      [10, 12],
+      [11, 23],
+      [12, 7],
+      [12, 8],
+      [12, 25]
+    ]
 
-    assert calendar.holiday?(Date.new(2016, 2, 8))
-    assert calendar.holiday?(Date.new(2016, 2, 9))
+    holidays_2020.each do |month, day|
+      assert calendar.holiday?(Date.new(2020, month, day))
+    end
 
-    assert calendar.holiday?(Date.new(2016, 3, 24))
-    assert calendar.holiday?(Date.new(2016, 3, 25))
-    assert calendar.holiday?(Date.new(2016, 3, 27))
+    date = Date.new(2020, 1, 1)
+    assertions = []
+    0.upto(365) do |day|
+      today = date + day
+      holiday = calendar.holiday?(today)
 
-    assert calendar.holiday?(Date.new(2016, 4, 2))
+      assertions << holiday
+    end
 
-    assert calendar.holiday?(Date.new(2016, 5, 1))
-    assert calendar.holiday?(Date.new(2016, 5, 25))
-
-    assert calendar.holiday?(Date.new(2016, 6, 20))
-
-    assert calendar.holiday?(Date.new(2016, 7, 8))
-    assert calendar.holiday?(Date.new(2016, 7, 9))
-
-    assert calendar.holiday?(Date.new(2016, 8, 15))
-
-    assert calendar.holiday?(Date.new(2016, 10, 10))
-
-    assert calendar.holiday?(Date.new(2016, 11, 28))
-
-    assert calendar.holiday?(Date.new(2016, 12, 8))
-    assert calendar.holiday?(Date.new(2016, 12, 25))
+    assert_equal(holidays_2020.count, assertions.count { |e| e })
   end
 end

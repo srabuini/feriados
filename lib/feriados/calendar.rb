@@ -8,20 +8,28 @@ module Feriados
     end
 
     def holiday?(date)
-      @rules.any? { |rule| rule.holiday?(date) }
+      rules.any? { |rule| rule.holiday?(date) }
     end
 
     def add(rule)
-      @rules << rule
+      rules << rule
     end
 
     def remove(rule)
-      @rules.delete(rule)
+      rules.delete(rule)
     end
 
     def push(rules)
-      @rules = rules
+      self.rules = rules
     end
+
+    def load_rules(file)
+      Loader.new(file, self).load
+    end
+
+    private
+
+    attr_accessor :rules
   end
 
   refine Date do
