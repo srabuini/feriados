@@ -52,7 +52,7 @@ fix_week_day:
         week: 4
         day: 1
 
-fix_day:
+fix_date:
   2020:
     3:
       - name: Feriado con fines turísticos

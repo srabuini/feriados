@@ -13,7 +13,7 @@ module Feriados
       load_day_of_month
       load_functions
       load_fix_week_days
-      load_fix_days
+      load_fix_dates
     end
 
     private
@@ -49,8 +49,8 @@ module Feriados
       end
     end
 
-    def load_fix_days
-      fix_day.each do |year, months|
+    def load_fix_dates
+      fix_date.each do |year, months|
         months.each do |month, rules|
           rules.each do |rule_data|
             rule = OpenStruct.new(rule_data)
@@ -72,8 +72,8 @@ module Feriados
       data['fix_week_day']['month']
     end
 
-    def fix_day
-      data['fix_day']
+    def fix_date
+      data['fix_date']
     end
   end
 end

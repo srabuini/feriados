@@ -1,27 +1,134 @@
-Feriados
-========
+# Feriados
 
-Make a calendar and add it rules for holidays.
+Create a calendar and add it rules for holidays.
 
-Install
--------
+## Install
 
     gem install feriados
 
-How to use it
--------------
+## How to use it
+
+A rule is an object which respond to `holiday?(date)` and `name`. There are four kinds of
+ rules included with Feriados:
+
+### DayOfMOnth
+
+`DayOfMonth` is a holiday that happens the same day at same month every year, like *New Year*.
 
 ``` ruby
 require 'feriados'
 
 calendar = Feriados::Calendar.new
 
-calendar.add Feriados::Rules::DayOfWeek.new(0)
+calendar.add Feriados::Rules::DayOfMOnth.new(1, 1, 'New Year')
 
-calendar.holiday?(Date.new(2016, 5, 1)) #=> true
+date = Date.new(2020, 1, 1)
+
+calendar.holiday?(date) #=> true
+
+calendar.holiday_name(date) #=> New Year
+```
+### FixWeekDay
+
+`FixWeekDay` is a holiday that happens each year the same week day the nth week, like *the fourth Thursday of November*.
+
+``` ruby
+calendar.add Feriados::Rules::FixWeekDay.new(4, 4, 11, 'Thanksgiving')
+
+date = Date.new(2020, 11, 26)
+
+calendar.holiday?(date) #=> true
+
+calendar.holiday_name(date) #=> Thanksgiving
 ```
 
-You can use a refinement for `Date` class:
+### Function
+
+`Function` is a holiday that is calculated each year, like *Easter*
+
+``` ruby
+calendar.add Feriados::Rules::Easter
+
+date = Date.new(2020, 4, 12)
+
+calendar.holiday?(date) #=> true
+
+calendar.holiday_name(date) #=> nil
+
+# You might add a name to easter
+
+Feriados::Rules::Easter.name = 'Easter'
+
+calendar.holiday_name(date) #=> Easter
+
+```
+The other included *Functions* in Feriados are: `HolyThursday`,
+ `HolyFriday`, `CarnivalMonday`, `CarnivalTuesday`.
+
+### FixDate
+
+`FixDate` is a holiday that happens on a date on an specific year, like *2020 RubyConf*.
+
+``` ruby
+calendar.add Feriados::Rules::FixDate.new(2020, 11, 17, 'RubyConf')
+
+date = Date.new(2020, 11, 17)
+
+calendar.holiday?(date) #=> true
+
+calendar.holiday_name(date) #=> RubyConf
+```
+
+## Adding rules massively
+
+It is possible to add rules using a `Hash`.
+
+```ruby
+rules = {
+  "day_of_month" => {
+    "month" => {
+      1 => [{
+        "name" => "New Year",
+        "day" => 1
+      }]
+    }
+  },
+  "function" => {
+    "easter" => "Easter", "holy_thursday" => "Holy Thursday", "holy_friday" => "Holy Friday", "carnival_monday" => "Carnival Monday", "carnival_tuesday" => "Carnival Tuesday"
+  },
+  "fix_week_day" => {
+    "month" => {
+      11 => [{
+        "name" => "Thanksgiving",
+        "week" => 4,
+        "day" => 4
+      }]
+    }
+  },
+  "fix_date" => {
+    2020 => {
+      11 => [{
+        "name" => "RubyConf",
+        "day" => 17
+      }]
+    }
+  }
+}
+
+calendar.load rules
+```
+
+Or you could use a `YAML` file like the included under `test` folder.
+
+```ruby
+rules = YAML.load_file(file_with_rules)
+
+calendar.load(rules)
+```
+
+## Refinements
+
+It is possible to use a refinement for `Date` class:
 
 ``` ruby
 using Feriados
@@ -29,5 +136,6 @@ using Feriados
 # Set a calendar to Date class
 Date.calendar = calendar
 
-Date.new(2016, 5, 1).holiday? #=> true
+Date.new(2020, 4, 12).holiday? #=> true
+Date.new(2020, 4, 12).holiday_name(date) #=> Easter
 ```

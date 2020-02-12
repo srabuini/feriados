@@ -8,9 +8,9 @@ class CalendarTest < Minitest::Test
     calendar = Calendar.new
 
     file = File.join(__dir__, './argentina.yml')
-    data = YAML.load_file(file)
+    rules = YAML.load_file(file)
 
-    calendar.load_rules(data)
+    calendar.load(rules)
 
     holidays2020_data = [
       [1, 1, 'Año nuevo'],

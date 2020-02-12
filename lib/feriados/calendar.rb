@@ -23,7 +23,7 @@ module Feriados
       rules.delete(rule)
     end
 
-    def load_rules(file)
+    def load(file)
       Loader.new(file, self).load
     end
 
