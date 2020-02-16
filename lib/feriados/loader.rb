@@ -61,19 +61,19 @@ module Feriados
     end
 
     def day_of_month
-      data['day_of_month']['month']
+      data.dig('day_of_month', 'month') || []
     end
 
     def function
-      data['function']
+      data.dig('function') || []
     end
 
     def fix_week_day
-      data['fix_week_day']['month']
+      data.dig('fix_week_day', 'month') || []
     end
 
     def fix_date
-      data['fix_date']
+      data.dig('fix_date') || []
     end
   end
 end

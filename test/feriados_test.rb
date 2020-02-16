@@ -53,4 +53,14 @@ class CalendarTest < Minitest::Test
 
     assert_equal(holidays2020_data.count, detected_holidays.count { |e| e })
   end
+
+  def test_load_incomplete_rules
+    rules = {}
+
+    calendar = Calendar.new
+
+    calendar.load(rules)
+
+    assert_equal calendar, Calendar.new
+  end
 end

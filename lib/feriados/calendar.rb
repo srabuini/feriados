@@ -27,7 +27,15 @@ module Feriados
       Loader.new(file, self).load
     end
 
-    private
+    def eql?(other)
+      rules == other.rules
+    end
+
+    def ==(other)
+      eql?(other)
+    end
+
+    protected
 
     attr_accessor :rules
   end
