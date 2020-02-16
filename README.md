@@ -8,12 +8,13 @@ Create a calendar and add it rules for holidays.
 
 ## How to use it
 
-A rule is an object which respond to `holiday?(date)` and `name`. There are four kinds of
- rules included with Feriados:
+A rule is an object which respond to `holiday?(date)` and `name`. There are four
+kinds of rules included with Feriados:
 
 ### DayOfMOnth
 
-`DayOfMonth` is a holiday that happens the same day at same month every year, like *New Year*.
+`DayOfMonth` is a holiday that happens the same day at same month every year,
+like *New Year*.
 
 ``` ruby
 require 'feriados'
@@ -30,7 +31,8 @@ calendar.holiday_name(date) #=> New Year
 ```
 ### FixWeekDay
 
-`FixWeekDay` is a holiday that happens each year the same week day the nth week, like *the fourth Thursday of November*.
+`FixWeekDay` is a holiday that happens each year the same week day the nth week,
+like *the fourth Thursday of November*.
 
 ``` ruby
 calendar.add Feriados::Rules::FixWeekDay.new(4, 4, 11, 'Thanksgiving')
@@ -67,7 +69,8 @@ The other included *Functions* in Feriados are: `HolyThursday`,
 
 ### FixDate
 
-`FixDate` is a holiday that happens on a date on an specific year, like *2020 RubyConf*.
+`FixDate` is a holiday that happens on a date on an specific year,
+like *2020 RubyConf*.
 
 ``` ruby
 calendar.add Feriados::Rules::FixDate.new(2020, 11, 17, 'RubyConf')
@@ -94,7 +97,11 @@ rules = {
     }
   },
   "function" => {
-    "easter" => "Easter", "holy_thursday" => "Holy Thursday", "holy_friday" => "Holy Friday", "carnival_monday" => "Carnival Monday", "carnival_tuesday" => "Carnival Tuesday"
+    "easter" => "Easter",
+    "holy_thursday" => "Holy Thursday",
+    "holy_friday" => "Holy Friday",
+    "carnival_monday" => "Carnival Monday",
+    "carnival_tuesday" => "Carnival Tuesday"
   },
   "fix_week_day" => {
     "month" => {
@@ -118,7 +125,7 @@ rules = {
 calendar.load rules
 ```
 
-Or you could use a `YAML` file like the included under `test` folder.
+Or you could use a `YAML` file like [test/argentina.yml](test/argentina.yml).
 
 ```ruby
 rules = YAML.load_file(file_with_rules)
