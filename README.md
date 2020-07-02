@@ -8,12 +8,12 @@ Create a calendar and add it rules for holidays.
 
 ## How to use it
 
-A rule is an object which respond to `holiday?(date)` and `name`. There are four
-kinds of rules included with Feriados:
+A rule is an object that responds to `holiday?(date)` and `name`. There are four
+kinds of rules included in Feriados:
 
 ### DayOfMOnth
 
-`DayOfMonth` is a holiday that happens the same day at same month every year,
+`DayOfMonth` is a holiday that occurs the same day and month every year,
 like *New Year*.
 
 ``` ruby
@@ -46,7 +46,7 @@ calendar.holiday_name(date) #=> Thanksgiving
 
 ### Function
 
-`Function` is a holiday that is calculated each year, like *Easter*
+`Function` is a holiday that is calculated for every year, like *Easter*
 
 ``` ruby
 calendar.add Feriados::Rules::Easter
@@ -138,7 +138,14 @@ calendar.load(rules)
 It is possible to use a refinement for `Date` class:
 
 ``` ruby
+require 'feriados'
+
 using Feriados
+
+calendar = Feriados::Calendar.new
+
+calendar.add Feriados::Rules::Easter
+Feriados::Rules::Easter.name = 'Easter'
 
 # Set a calendar to Date class
 Date.calendar = calendar
