@@ -23,8 +23,8 @@ module Feriados
       rules.delete(rule)
     end
 
-    def load(file)
-      Loader.new(file, self).load
+    def load(rules)
+      Loader.new(rules, self).load
     end
 
     def eql?(other)

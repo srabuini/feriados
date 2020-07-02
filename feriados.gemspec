@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'feriados'
-  s.version       = '4.2.2'
+  s.version       = '4.3.0'
   s.authors       = ['Sebastian Rabuini']
   s.email         = ['srabuini@gmail.com']
   s.summary       = 'Holidays calendars'

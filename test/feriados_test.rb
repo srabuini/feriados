@@ -39,7 +39,7 @@ class CalendarTest < Minitest::Test
     holidays2020_data.each do |month, day, description|
       date = Date.new(2020, month, day)
 
-      assert calendar.holiday?(date)
+      assert calendar.holiday?(date), date
 
       assert_equal description, calendar.holiday_name(date), date
     end

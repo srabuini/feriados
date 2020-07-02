@@ -11,7 +11,7 @@ Create a calendar and add it rules for holidays.
 A rule is an object that responds to `holiday?(date)` and `name`. There are four
 kinds of rules included in Feriados:
 
-### DayOfMOnth
+### DayOfMonth
 
 `DayOfMonth` is a holiday that occurs the same day and month every year,
 like *New Year*.
@@ -21,7 +21,7 @@ require 'feriados'
 
 calendar = Feriados::Calendar.new
 
-calendar.add Feriados::Rules::DayOfMOnth.new(1, 1, 'New Year')
+calendar.add Feriados::Rules::DayOfMonth.new(1, 1, 'New Year')
 
 date = Date.new(2020, 1, 1)
 
@@ -87,40 +87,31 @@ calendar.holiday_name(date) #=> RubyConf
 It is possible to add rules using a `Hash`.
 
 ```ruby
-rules = {
-  "day_of_month" => {
-    "month" => {
-      1 => [{
-        "name" => "New Year",
-        "day" => 1
-      }]
-    }
-  },
-  "function" => {
-    "easter" => "Easter",
-    "holy_thursday" => "Holy Thursday",
-    "holy_friday" => "Holy Friday",
-    "carnival_monday" => "Carnival Monday",
-    "carnival_tuesday" => "Carnival Tuesday"
-  },
-  "fix_week_day" => {
-    "month" => {
-      11 => [{
-        "name" => "Thanksgiving",
-        "week" => 4,
-        "day" => 4
-      }]
-    }
-  },
-  "fix_date" => {
-    2020 => {
-      11 => [{
-        "name" => "RubyConf",
-        "day" => 17
-      }]
-    }
-  }
-}
+rules = [{
+  month: 1,
+  day: 1,
+  name: 'New Year'
+}, {
+  easter: 'Easter'
+}, {
+  holy_thursday: 'Holy Thursday'
+}, {
+  holy_friday: 'Holy Friday'
+}, {
+  carnival_monday: 'Carnival Monday'
+}, {
+  carnival_tuesday: 'Carnival Tuesday'
+}, {
+  month: 11,
+  day: 4,
+  week: 4,
+  name: 'Thanksgiving'
+}, {
+  year: 2020,
+  month: 11,
+  day: 17,
+  name: 'RubyConf'
+}]
 
 calendar.load rules
 ```
