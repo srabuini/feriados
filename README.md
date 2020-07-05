@@ -142,5 +142,5 @@ Feriados::Rules::Easter.name = 'Easter'
 Date.calendar = calendar
 
 Date.new(2020, 4, 12).holiday? #=> true
-Date.new(2020, 4, 12).holiday_name(date) #=> Easter
+Date.new(2020, 4, 12).holiday_name #=> Easter
 ```

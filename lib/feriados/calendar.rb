@@ -46,6 +46,10 @@ module Feriados
     def holiday?
       @@calendar.holiday?(self)
     end
+
+    def holiday_name
+      @@calendar.holiday_name(self)
+    end
   end
 
   refine Date.singleton_class do

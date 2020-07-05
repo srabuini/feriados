@@ -11,10 +11,11 @@ class DateTest < Minitest::Test
 
     date = Date.new(2016, 5, 2)
 
-    calendar.add(FixDate.new(date.year, date.month, date.day))
+    calendar.add(FixDate.new(date.year, date.month, date.day, 'Bridge'))
 
     assert calendar.holiday?(date)
 
     assert date.holiday?
+    assert_equal date.holiday_name, 'Bridge'
   end
 end
