@@ -16,7 +16,7 @@
   :name: Día de la Revolución de Mayo
 - :month: 6
   :day: 20
-  :name: Día de la Bandera
+  :name: Paso a la Inmortalidad del Gral. Manuel Belgrano
 - :month: 7
   :day: 9
   :name: Día de la Independencia
@@ -36,29 +36,29 @@
 - :month: 6
   :day: 1
   :week: 3
-  :name: Día Paso a la Inmortalidad del General Martín Miguel de Güemes
+  :name: Paso a la Inmortalidad del Gral. Don Martín Miguel de Güemes
 - :month: 8
   :week: 3
   :day: 1
   :name: Paso a la Inmortalidad del Gral. José de San Martín
 - :month: 10
   :day: 1
-  :week: 2
+  :week: 3
   :name: Día del Respeto a la Diversidad Cultural
 - :month: 11
   :day: 1
-  :week: 4
+  :week: 3
   :name: Día de la Soberanía Nacional
 # FixDate
-- :year: 2020
-  :month: 3
-  :day: 23
+- :year: 2023
+  :month: 5
+  :day: 26
   :name: Feriado con fines turísticos
-- :year: 2020
-  :month: 7
-  :day: 10
+- :year: 2023
+  :month: 6
+  :day: 19
   :name: Feriado con fines turísticos
-- :year: 2020
-  :month: 12
-  :day: 7
+- :year: 2023
+  :month: 10
+  :day: 13
   :name: Feriado con fines turísticos

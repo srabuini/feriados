@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
   s.homepage      = 'https://github.com/srabuini/feriados'
   s.files         = Dir['lib/**/*.rb']
-  s.test_files    = Dir['test/**/*.rb']
   s.require_paths = ['lib']
   s.required_ruby_version = '>= 2.3'
   s.add_development_dependency 'minitest', '~> 5.14'
