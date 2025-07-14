@@ -144,3 +144,40 @@ Date.calendar = calendar
 Date.new(2020, 4, 12).holiday? #=> true
 Date.new(2020, 4, 12).holiday_name #=> Easter
 ```
+
+## Advanced Calendar Methods
+
+### Getting all holidays in a year
+
+```ruby
+calendar = Feriados::Calendar.new
+calendar.load(rules)
+
+# Get all holidays in 2025
+holidays = calendar.holidays_in_year(2025)
+holidays.each do |holiday|
+  puts "#{holiday[:date]} - #{holiday[:name]}"
+end
+```
+
+### Getting holidays in a date range
+
+```ruby
+start_date = Date.new(2025, 3, 1)
+end_date = Date.new(2025, 5, 31)
+
+holidays = calendar.holidays_between(start_date, end_date)
+# Returns array of {date: Date, name: String}
+```
+
+### Finding the next holiday
+
+```ruby
+# Next holiday from today
+next_holiday = calendar.next_holiday
+# => {date: Date.new(2025, 8, 18), name: "Independence Day"}
+
+# Next holiday from a specific date
+next_holiday = calendar.next_holiday(Date.new(2025, 6, 1))
+# => {date: Date.new(2025, 6, 20), name: "Flag Day"}
+```

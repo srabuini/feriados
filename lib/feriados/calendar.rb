@@ -27,6 +27,47 @@ module Feriados
       Loader.new(rules, self).load
     end
 
+    def holidays_in_year(year)
+      start_date = Date.new(year, 1, 1)
+      end_date = Date.new(year, 12, 31)
+      holidays_between(start_date, end_date)
+    end
+
+    def holidays_between(start_date, end_date)
+      holidays = []
+      current_date = start_date
+
+      while current_date <= end_date
+        if holiday?(current_date)
+          holidays << {
+            date: current_date,
+            name: holiday_name(current_date)
+          }
+        end
+        current_date += 1
+      end
+
+      holidays
+    end
+
+    def next_holiday(from_date = Date.today)
+      # Search in the next 2 years to ensure finding at least one holiday
+      end_search_date = Date.new(from_date.year + 2, 12, 31)
+      current_date = from_date
+
+      while current_date <= end_search_date
+        if holiday?(current_date)
+          return {
+            date: current_date,
+            name: holiday_name(current_date)
+          }
+        end
+        current_date += 1
+      end
+
+      nil # No holidays found in the range
+    end
+
     def eql?(other)
       rules == other.rules
     end
@@ -41,20 +82,26 @@ module Feriados
   end
 
   refine Date do
-    @calendar = nil
-
     def holiday?
-      @@calendar.holiday?(self)
+      calendar = Date.class_variable_get(:@@calendar) if Date.class_variable_defined?(:@@calendar)
+      return false unless calendar
+      calendar.holiday?(self)
     end
 
     def holiday_name
-      @@calendar.holiday_name(self)
+      calendar = Date.class_variable_get(:@@calendar) if Date.class_variable_defined?(:@@calendar)
+      return nil unless calendar
+      calendar.holiday_name(self)
     end
   end
 
   refine Date.singleton_class do
     def calendar=(calendar)
-      @@calendar = calendar
+      class_variable_set(:@@calendar, calendar)
+    end
+
+    def calendar
+      class_variable_get(:@@calendar) if class_variable_defined?(:@@calendar)
     end
   end
 end
